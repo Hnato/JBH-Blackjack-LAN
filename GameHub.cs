@@ -167,6 +167,7 @@ public class GameHub : Hub
         public bool Finished { get; set; }
         public string Phase { get; set; } = "BETTING";
         public int DeckCount { get; set; }
+        private const int DecksInShoe = 6;
         private List<Card> Deck { get; set; } = new List<Card>();
 
         public GameState()
@@ -270,16 +271,18 @@ public class GameHub : Hub
         private List<Card> BuildDeck()
         {
             var d = new List<Card>();
-            foreach(var s in Suits)
-                foreach(var r in Ranks)
-                    d.Add(new Card{ r=r, s=s });
+            for(int k=0;k<DecksInShoe;k++)
+            {
+                foreach(var s in Suits)
+                    foreach(var r in Ranks)
+                        d.Add(new Card{ r=r, s=s });
+            }
             return d;
         }
 
         private void Shuffle(List<Card> a)
         {
-            var rnd = Random.Shared;
-            for(int i=a.Count-1;i>0;i--){ int j=rnd.Next(i+1); var t=a[i]; a[i]=a[j]; a[j]=t; }
+            for(int i=a.Count-1;i>0;i--){ int j=System.Security.Cryptography.RandomNumberGenerator.GetInt32(i+1); var t=a[i]; a[i]=a[j]; a[j]=t; }
         }
 
         private Card Deal(){ var c = Deck[^1]; Deck.RemoveAt(Deck.Count-1); return c; }
@@ -344,6 +347,7 @@ public class GameHub : Hub
             if (Phase != "PLAY") return;
             var p = Players.FirstOrDefault(x=>x.Seat==seat);
             if (p==null || p.Finished) return;
+            if (ActiveSeat != seat) return;
             if (p.Hand.Count != 2) return;
             if (p.Bet <= 0) return;
             var extraCap = Math.Max(0, 2000 - p.Bet);
@@ -371,7 +375,7 @@ public class GameHub : Hub
                 }
                 else if (dealerSc>21)
                 {
-                    payout = (int)Math.Floor(p.Bet * 2.5);
+                    payout = p.Bet * 2;
                 }
                 else if (playerBJ && !dealerBJ)
                 {

@@ -316,14 +316,10 @@ function addChips(container, amount){
   let remaining=amount
   const stack=[]
   for(const d of denoms){ while(remaining>=d){ stack.push(d); remaining-=d } }
-  const chipSize=26
+  const chipSize=28
   const maxWidth = parseInt(getComputedStyle(container).width)||90
-  const overlapRatio = 0.95
-  let step = stack.length>1 ? Math.max(2, Math.floor(chipSize*(1-overlapRatio))) : 0
-  if(stack.length>1){
-    const fitStep = Math.floor((maxWidth - chipSize) / (stack.length-1))
-    step = Math.min(step, Math.max(1, fitStep))
-  }
+  const overlapRatio = 0.70
+  let step = stack.length>1 ? Math.max(1, Math.floor(chipSize*(1-overlapRatio))) : 0
   container.style.position='relative'
   container.innerHTML=''
   for(let i=0;i<stack.length;i++){

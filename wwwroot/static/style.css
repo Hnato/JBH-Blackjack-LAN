@@ -85,7 +85,7 @@ body{margin:0;min-height:100vh;background:radial-gradient(1200px 600px at 50% 25
 }
 .seat {
   position: absolute;
-  width: 260px;
+  width: 230px;
   height: 180px;
   background: linear-gradient(135deg, rgba(15,15,15,.55), rgba(27,27,27,.35));
   border: 1px solid rgba(255,210,77,.30);
@@ -96,7 +96,8 @@ body{margin:0;min-height:100vh;background:radial-gradient(1200px 600px at 50% 25
 }
 .seat .name {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 22px;
   align-items: center;
   font-weight: 700;
   color: #dfe8de;
@@ -124,7 +125,6 @@ body{margin:0;min-height:100vh;background:radial-gradient(1200px 600px at 50% 25
 .seat .cards.split .hand-bet { position:absolute; transform: translateY(-100%); margin-left: 6px; font-size: 11px; color: #cfd9d0 }
 .seat .chips-row {
   position: relative;
-  margin-left: 8px;
   width: 90px;
   height: 28px;
   overflow: visible;
